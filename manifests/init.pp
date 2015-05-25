@@ -53,6 +53,8 @@ class mumble(
         }
       }
     }
+    'Debian': {
+    }
     default: {
       fail("${::operatingsystem} is not yet supported.")
     }
