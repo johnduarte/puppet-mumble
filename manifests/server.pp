@@ -60,40 +60,40 @@ class mumble::server (
   }
 
   package { 'mumble-server':
-    ensure => $version
+    ensure => $version,
   }
 
   group { $group:
-    require => Package['mumble-server']
+    require => Package['mumble-server'],
   }
 
   user { $user:
     gid     => $group,
-    require => [Group[$group], Package['mumble-server']]
+    require => [Group[$group], Package['mumble-server']],
   }
 
-  if $mysql::server::manage_config_file  {
+  if $mumble::server::manage_config_file  {
     file { 'mumble-config-file':
       path    => $mumble::server::config_file,
       owner   => $user,
       group   => $group,
       replace => true,
       content => template('mumble/mumble-server.erb'),
-      require => Package['mumble-server']
+      require => Package['mumble-server'],
+      notify  => Service['mumble-server'],
     }
   }
 
   service { 'mumble-server':
     ensure    => running,
     enable    => $autostart,
-    subscribe => File['mumble-config-file']
   }
 
   if $server_password != undef {
     exec { 'mumble_set_password':
       command => "murmurd -supw ${server_password}",
       path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-      require => Service['mumble-server']
+      require => Service['mumble-server'],
     }
   }
 }
