@@ -92,7 +92,7 @@ class mumble::server (
   if $server_password != undef {
     exec { 'mumble_set_password':
       command => "murmurd -supw ${server_password}",
-      path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin'
+      path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
       require => Service['mumble-server']
     }
   }
