@@ -1,5 +1,5 @@
 module Puppet::Parser::Functions
-  newfunction(:get_latest, :type => :rvalue) do |args|
+  newfunction(:get_latest_mumble_release_url_base, :type => :rvalue) do |args|
     require 'open3'
     cmd = 'curl -L https://github.com/mumble-voip/mumble/releases/latest | sed -n "s/.*href=\"\(.*\)\.msi\".*/\1/p"'
     latest = Open3.capture2(cmd)[0].chomp
