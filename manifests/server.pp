@@ -26,7 +26,7 @@ class mumble::server (
   $log_days           = $mumble::params::log_days,
   $ssl_cert           = $mumble::params::ssl_cert,
   $ssl_key            = $mumble::params::ssl_key,
-  ) {
+  ) inherits mumble::params {
 
   case $::operatingsystem {
     'Ubuntu': {
