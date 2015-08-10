@@ -7,7 +7,8 @@ class mumble::client (
 
   case $::operatingsystem {
     'Windows': {
-      $package_source = 'https://github.com/mumble-voip/mumble/releases/download/1.2.10/mumble-1.2.10.msi'
+      $latest_url = get_latest_mumble_release_url_base()
+      $package_source = "${latest_url}.msi"
     }
     default: {
     }
