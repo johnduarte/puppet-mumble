@@ -1,12 +1,17 @@
+require 'open-uri'
+
 module Puppet::Parser::Functions
   newfunction(:get_latest_mumble_release_url_base, :type => :rvalue) do |args|
-    require 'open3'
-    cmd = 'curl -L https://github.com/mumble-voip/mumble/releases/latest | sed -n "s/.*href=\"\(.*\)\.msi\".*/\1/p"'
-    latest = Open3.capture2(cmd)[0].chomp
-    unless latest.empty? then
-      return 'https://github.com' + latest
+    suffix = args[0]
+    html = open('https://github.com/mumble-voip/mumble/releases/latest').read
+    res = /(?<latest>[\/\w\.-]+)\.msi/.match(html)
+    latest = res[:latest]
+    latest = 'https://github.com' + latest + '.' + suffix
+    sig = open("#{latest}.sig").read
+    if /BEGIN PGP SIGNATURE/.match(sig) then
+      latest
     else
-      return ''
+      ''
     end
   end
 end

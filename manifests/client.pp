@@ -7,8 +7,8 @@ class mumble::client (
 
   case $::operatingsystem {
     'Windows': {
-      $latest_url = get_latest_mumble_release_url_base()
-      $package_source = "${latest_url}.msi"
+      $latest_url = get_latest_mumble_release_url_base('msi')
+      $package_source = $latest_url
     }
     default: {
     }
