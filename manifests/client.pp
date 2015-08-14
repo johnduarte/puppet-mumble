@@ -5,5 +5,10 @@ class mumble::client (
   $package_source  = $mumble::params::client_package_source,
 ) inherits mumble::params {
 
-  contain '::mumble::client::install'
+  package { 'mumble-client':
+    ensure          => $package_ensure,
+    name            => $package_name,
+    source          => $package_source,
+  }
+
 }
