@@ -31,9 +31,29 @@ class mumble::params {
   $ssl_key            = ''
   $welcome_text       = '<br />Welcome to this server running <b>Murmur</b>.<br />Enjoy your stay!<br />'
 
-  # client params
-  $client_package_ensure  = 'present'
-  $client_package_manage  = true
-  $client_package_name    = 'mumble'
-
+  case $::osfamily {
+    'Debian': {
+      case $::operatingsystem {
+        'Ubuntu': {
+          if $ppa {
+            if $::os.release.full == '12.04' {
+              $libicu_fix = true
+            }
+          }
+        }
+        default: {
+          $client_package_name    = 'mumble'
+          $client_package_source  = ''
+        }
+      }
+    }
+    'windows': {
+      $client_package_name    = 'mumble'
+      $client_package_source = get_latest_mumble_release_url_base('msi')
+    }
+    default: {
+      $client_package_name    = 'mumble'
+      $client_package_source  = ''
+    }
+  }
 }
