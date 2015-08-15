@@ -35,6 +35,8 @@ class mumble::params {
     'Debian': {
       case $::operatingsystem {
         'Ubuntu': {
+          $server_package_name    = 'mumble-server'
+          $client_package_name    = 'mumble'
           if $ppa {
             if $::os.release.full == '12.04' {
               $libicu_fix = true
@@ -42,18 +44,44 @@ class mumble::params {
           }
         }
         default: {
+          $server_package_name    = 'mumble-server'
           $client_package_name    = 'mumble'
-          $client_package_source  = ''
+        }
+      }
+    }
+    'RedHat': {
+      case $::operatingsystem {
+        'Fedora': {
+          if (versioncmp($::operatingsystemrelease, '13') >= 0) {
+            if (versioncmp($::operatingsystemrelease, '20') <= 0) {
+              $server_package_name    = 'mumble-server'
+              $client_package_name    = 'mumble'
+            } else {
+              fail("Only fedora versions 13-20 are supported")
+            }
+          } else {
+            fail("Only fedora versions 13-20 are supported")
+          }
+        }
+        'ArchLinux': {
+          $server_package_name    = 'murmur'
+          $client_package_name    = 'mumble'
+        }
+        default: {
+          fail("${::operatingsystem} is not supported")
         }
       }
     }
     'windows': {
-      $client_package_name    = 'mumble'
-      $client_package_source = get_latest_mumble_release_url_base('msi')
+      $client_package_name    = 'Mumble 1.2.10'
+      #$install_options        = ['INSTALLDIR=C:\\java', 'STATIC=1', '/s']
+    }
+    'darwin': {
+      fail("MacOS is not supported")
     }
     default: {
+      $server_package_name    = 'mumble-server'
       $client_package_name    = 'mumble'
-      $client_package_source  = ''
     }
   }
 }
