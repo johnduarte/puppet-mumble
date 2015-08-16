@@ -5,6 +5,10 @@ class mumble::client (
   $package_source  = undef,
   $version         = 'latest',
 ) inherits mumble::params {
+validate_string($package_ensure)
+validate_string($package_name)
+validate_string($package_source)
+validate_string($version)
 
   if $package_source == undef {
     if $::osfamily == 'windows' {
@@ -13,9 +17,6 @@ class mumble::client (
       $_package_source  = $package_source
     }
   }
-  notify { 'mumble-client source':
-    message => $_package_source,
-  }->
   package { 'mumble-client':
     ensure          => $package_ensure,
     name            => $package_name,

@@ -26,7 +26,36 @@ class mumble::server (
   $log_days           = $mumble::params::log_days,
   $ssl_cert           = $mumble::params::ssl_cert,
   $ssl_key            = $mumble::params::ssl_key,
+  $welcome_text       = $mumble::params::absolute_path,
   ) inherits mumble::params {
+
+validate_absolute_path($config_file)
+validate_bool($manage_config_file)
+validate_bool($autostart)
+validate_bool($ppa)
+validate_bool($snapshot)
+validate_bool($libicu_fix)
+validate_string($server_password)
+validate_string($version)
+validate_string($register_name)
+validate_string($password)
+validate_numeric($port)
+validate_string($host)
+validate_string($user)
+validate_string($group)
+validate_numeric($bandwidth)
+validate_numeric($users)
+validate_numeric($text_length_limit)
+validate_numeric($autoban_attempts)
+validate_numeric($autoban_time_frame)
+validate_numeric($autoban_time)
+validate_absolute_path($database_path)
+validate_absolute_path($log_path)
+validate_bool($allow_html)
+validate_numeric($log_days)
+validate_string($ssl_cert)
+validate_string($ssl_key)
+validate_string($welcome_text)
 
   case $::operatingsystem {
     'Ubuntu': {

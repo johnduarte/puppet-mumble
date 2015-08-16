@@ -11,6 +11,8 @@ class mumble::params {
 
   # The following parameters affect mumble-server.ini through a template
   # For more info, see http://mumble.sourceforge.net/Murmur.ini
+  $config_file        = '/etc/mumble-server.ini'
+  $manage_config_file = false
   $register_name      = 'Mumble Server'
   $password           = ''    # General entrance password
   $port               = 64738
